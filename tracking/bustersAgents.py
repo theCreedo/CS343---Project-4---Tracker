@@ -162,5 +162,48 @@ class GreedyBustersAgent(BustersAgent):
         livingGhostPositionDistributions = \
             [beliefs for i, beliefs in enumerate(self.ghostBeliefs)
              if livingGhosts[i+1]]
+
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+
+        maxBeliefs = list()
+
+        # retrieve the list of beliefs in living ghost distributions
+        for belief in livingGhostPositionDistributions:
+            maxBeliefs.append(belief.argMax())
+
+        goalLocation = None
+        goalProbability = 0
+
+        # for each ghost position probability, find the greatest distribution of where a living ghost would be
+        # save its position and probability as the goal location and goal probability
+        for i in range(len(livingGhostPositionDistributions)):
+            for loc in maxBeliefs:
+
+                ghostPositionProbability = livingGhostPositionDistributions[i][loc]
+
+                if ghostPositionProbability > goalProbability:
+                    goalLocation = loc
+                    goalProbability = ghostPositionProbability
+
+        bestAction = list()
+
+        # for every legal action, calculate the possible distances given an action to the goal location of ghost
+        for action in legal:
+            nextLocation = Actions.getSuccessor(pacmanPosition, action)
+            possibleLocations = (util.manhattanDistance(nextLocation, goalLocation), action)
+            bestAction.append(possibleLocations)
+
+        minDistance = 9999
+        minDirection = None
+
+        # find the min distance possible and its associated direction to return
+        for distance, direction in bestAction:
+            if distance <= minDistance:
+                minDistance = distance
+                minDirection = direction
+
+        return minDirection
+
+
+

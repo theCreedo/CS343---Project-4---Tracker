@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5d28aadf-c1ab-4fab-b98e-3d5d1b3c3a89" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/tracking/inference.py" afterPath="$PROJECT_DIR$/tracking/inference.py" />
+      <change beforePath="$PROJECT_DIR$/tracking/bustersAgents.py" afterPath="$PROJECT_DIR$/tracking/bustersAgents.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,27 +13,54 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="bustersAgents.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="bustersAgents.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tracking/bustersAgents.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="705">
-              <caret line="52" column="68" lean-forward="false" selection-start-line="52" selection-start-column="68" selection-end-line="52" selection-end-column="68" />
+            <state relative-caret-position="896">
+              <caret line="201" column="39" lean-forward="true" selection-start-line="201" selection-start-column="39" selection-end-line="201" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="inference.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="game.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tracking/game.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="639">
+              <caret line="307" column="34" lean-forward="true" selection-start-line="307" selection-start-column="34" selection-end-line="307" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="inference.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tracking/inference.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="949">
-              <caret line="243" column="67" lean-forward="true" selection-start-line="243" selection-start-column="67" selection-end-line="243" selection-end-column="67" />
+            <state relative-caret-position="598">
+              <caret line="244" column="0" lean-forward="true" selection-start-line="244" selection-start-column="0" selection-end-line="244" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="util.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tracking/util.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-57">
+              <caret line="228" column="0" lean-forward="true" selection-start-line="228" selection-start-column="0" selection-end-line="228" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>argMax</find>
+      <find>belief</find>
+      <find>counter</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -42,6 +69,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/tracking/inference.py" />
+        <option value="$PROJECT_DIR$/tracking/bustersAgents.py" />
       </list>
     </option>
   </component>
@@ -53,7 +81,7 @@
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="23" />
-    <option name="width" value="1200" />
+    <option name="width" value="960" />
     <option name="height" value="1177" />
   </component>
   <component name="ProjectView">
@@ -161,18 +189,34 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/tracking/bustersAgents.py">
+    <entry file="file://$PROJECT_DIR$/tracking/inference.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="705">
-          <caret line="52" column="68" lean-forward="false" selection-start-line="52" selection-start-column="68" selection-end-line="52" selection-end-column="68" />
+        <state relative-caret-position="598">
+          <caret line="244" column="0" lean-forward="true" selection-start-line="244" selection-start-column="0" selection-end-line="244" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tracking/inference.py">
+    <entry file="file://$PROJECT_DIR$/tracking/util.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="949">
-          <caret line="243" column="67" lean-forward="true" selection-start-line="243" selection-start-column="67" selection-end-line="243" selection-end-column="67" />
+        <state relative-caret-position="-57">
+          <caret line="228" column="0" lean-forward="true" selection-start-line="228" selection-start-column="0" selection-end-line="228" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tracking/game.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="639">
+          <caret line="307" column="34" lean-forward="true" selection-start-line="307" selection-start-column="34" selection-end-line="307" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tracking/bustersAgents.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="896">
+          <caret line="201" column="39" lean-forward="true" selection-start-line="201" selection-start-column="39" selection-end-line="201" selection-end-column="39" />
           <folding />
         </state>
       </provider>
