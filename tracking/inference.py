@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -282,6 +282,14 @@ class ParticleFilter(InferenceModule):
         """
         "*** YOUR CODE HERE ***"
 
+        # create the particle list
+        self.particlesList = list()
+
+        # for every particle and every legal position, append where that particle could be located
+        for _ in range(self.numParticles):
+            for p in self.legalPositions:
+                self.particlesList.append(p)
+
     def observe(self, observation, gameState):
         """
         Update beliefs based on the given distance observation. Make sure to
@@ -313,7 +321,46 @@ class ParticleFilter(InferenceModule):
         emissionModel = busters.getObservationDistribution(noisyDistance)
         pacmanPosition = gameState.getPacmanPosition()
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        # initialize the counter and retrieve belief distribution
+        allPossible = util.Counter()
+        beliefs = self.getBeliefDistribution()
+
+        # Case 1
+        # update all particles when ghost is eaten (noisyDistance == None)
+        if noisyDistance == None:
+
+            # do this as a list because our particles are in a list
+            jailPositionList = [self.getJailPosition()]
+            self.particlesList = self.numParticles * jailPositionList
+        else:
+            # similar to q2
+            for p in self.legalPositions:
+
+                # retrieve true distance to each location and noisy
+                trueDistance = util.manhattanDistance(p, pacmanPosition)
+                probabilityOfNoisyGivenTrue = emissionModel[trueDistance]
+
+                # we want to keep summing them according to the particle
+                allPossible[p] = allPossible[p] + (beliefs[p] * probabilityOfNoisyGivenTrue)
+
+                # Check whether particles all have a weight of 0 and initialize uniformly if true
+                if allPossible.totalCount() == 0:
+                    self.initializeUniformly(gameState)
+                else:
+
+                    # iterate through particles
+                    particleSampleDistribution = list()
+
+                    # create the samples from the distribution based on new counter
+                    for _ in range(self.numParticles):
+                        particleSampleDistribution.append(util.sample(allPossible))
+
+                    self.particlesList = particleSampleDistribution
+
+
+
+
 
     def elapseTime(self, gameState):
         """
@@ -340,7 +387,18 @@ class ParticleFilter(InferenceModule):
         Counter object)
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        # initialize the counter
+        beliefDistribution = util.Counter()
+
+        # iterate through every particle and count occurrences
+        for particle in self.particlesList:
+            beliefDistribution[particle] += 1
+
+        beliefDistribution.normalize()
+
+        return beliefDistribution
+
 
 class MarginalInference(InferenceModule):
     """
