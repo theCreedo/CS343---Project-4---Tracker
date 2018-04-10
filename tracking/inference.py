@@ -344,19 +344,19 @@ class ParticleFilter(InferenceModule):
                 # we want to keep summing them according to the particle
                 allPossible[p] = allPossible[p] + (beliefs[p] * probabilityOfNoisyGivenTrue)
 
-                # Check whether particles all have a weight of 0 and initialize uniformly if true
-                if allPossible.totalCount() == 0:
-                    self.initializeUniformly(gameState)
-                else:
+            # Check whether particles all have a weight of 0 and initialize uniformly if true
+            if allPossible.totalCount() == 0:
+                self.initializeUniformly(gameState)
+            else:
 
-                    # iterate through particles
-                    particleSampleDistribution = list()
+                # iterate through particles
+                particleSampleDistribution = list()
 
-                    # create the samples from the distribution based on new counter
-                    for _ in range(self.numParticles):
-                        particleSampleDistribution.append(util.sample(allPossible))
+                # create the samples from the distribution based on new counter
+                for _ in range(self.numParticles):
+                    particleSampleDistribution.append(util.sample(allPossible))
 
-                    self.particlesList = particleSampleDistribution
+                self.particlesList = particleSampleDistribution
 
 
 
@@ -377,7 +377,17 @@ class ParticleFilter(InferenceModule):
         a belief distribution.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        # create a new counter to prevent copying over everything (reduce time by a lot)
+        allBeliefs = util.Counter()
+        for i in range(self.numParticles):
+            # use the position given from particle list at that index
+            allBeliefs[self.particlesList[i]] = self.getPositionDistribution(self.setGhostPosition(gameState, self.particlesList[i]))
+            # set the sample at that particular particle location
+            self.particlesList[i] = util.sample(allBeliefs[self.particlesList[i]])
+
+
+
 
     def getBeliefDistribution(self):
         """
