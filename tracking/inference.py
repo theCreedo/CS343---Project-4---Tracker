@@ -485,11 +485,11 @@ class JointParticleFilter:
         positions = list(itertools.product(self.legalPositions, repeat=self.numGhosts))
         random.shuffle(positions)
 
-        self.particleList = list()
+        self.particles = list()
 
         for _ in range(self.numParticles):
             for p in positions:
-                self.particleList.append(p)
+                self.particles.append(p)
 
     def addGhostAgent(self, agent):
         """
@@ -540,7 +540,7 @@ class JointParticleFilter:
 
         possibleCounter = util.Counter()
 
-        for particle in self.particleList:
+        for particle in self.particles:
             prior = 1
 
             for i in range(self.numGhosts):
@@ -558,7 +558,7 @@ class JointParticleFilter:
         if possibleCounter.totalCount() == 0:
             self.initializeParticles()
 
-            for particle in self.particleList:
+            for particle in self.particles:
                 for i in range(self.numGhosts):
                     if noisyDistances[i] is None:
                         particle = self.getParticleWithGhostInJail(particle, i)
@@ -569,7 +569,7 @@ class JointParticleFilter:
             for _ in range(self.numParticles):
                 newParticleList.append(util.sample(possibleCounter))
 
-            self.particleList = newParticleList
+            self.particles = newParticleList
 
     def getParticleWithGhostInJail(self, particle, ghostIndex):
         """
@@ -631,6 +631,11 @@ class JointParticleFilter:
 
             "*** YOUR CODE HERE ***"
 
+            for ghostNum in range(self.numGhosts):
+                newGhostPositions = setGhostPositions(gameState, newParticle)
+                distance = getPositionDistributionForGhost(newGhostPositions, ghostNum, self.ghostAgents[ghostNum])
+                newParticle[ghostNum] = util.sample(distance)
+
             "*** END YOUR CODE HERE ***"
             newParticles.append(tuple(newParticle))
         self.particles = newParticles
@@ -639,7 +644,7 @@ class JointParticleFilter:
         "*** YOUR CODE HERE ***"
 
         dist = util.Counter()
-        for particle in self.particleList:
+        for particle in self.particles:
             dist[particle] = dist[particle] + 1.0
 
         dist.normalize()
