@@ -482,11 +482,13 @@ class JointParticleFilter:
         """
         "*** YOUR CODE HERE ***"
 
+        # associate using itertools the positions x num of ghosts
         positions = list(itertools.product(self.legalPositions, repeat=self.numGhosts))
         random.shuffle(positions)
 
         self.particles = list()
 
+        # store per particle as a position
         for _ in range(self.numParticles):
             for p in positions:
                 self.particles.append(p)
@@ -538,21 +540,25 @@ class JointParticleFilter:
 
         "*** YOUR CODE HERE ***"
 
+        # counter
         possibleCounter = util.Counter()
 
         for particle in self.particles:
             prior = 1
 
+            # for each ghost
             for i in range(self.numGhosts):
 
-                distance = util.manhattanDistance(pacmanPosition, particle[i])
-                noisyDistance = emissionModels[i][distance]
-
+                # check the first case for eaten ghost
                 if noisyDistances[i] is None:
                     particle = self.getParticleWithGhostInJail(particle, i)
+                # else calculate the actual distance to get the partial/priority
                 else:
+                    distance = util.manhattanDistance(pacmanPosition, particle[i])
+                    noisyDistance = emissionModels[i][distance]
                     prior = prior * noisyDistance
 
+            # add prior to particle
             possibleCounter[particle] = possibleCounter[particle] + prior
 
         if possibleCounter.totalCount() == 0:
@@ -560,7 +566,7 @@ class JointParticleFilter:
 
             for particle in self.particles:
                 for i in range(self.numGhosts):
-                    if noisyDistances[i] is None:
+                    if noisyDistances[i] == None:
                         particle = self.getParticleWithGhostInJail(particle, i)
         else:
             possibleCounter.normalize()
@@ -631,10 +637,9 @@ class JointParticleFilter:
 
             "*** YOUR CODE HERE ***"
 
-            for ghostNum in range(self.numGhosts):
-                newGhostPositions = setGhostPositions(gameState, newParticle)
-                distance = getPositionDistributionForGhost(newGhostPositions, ghostNum, self.ghostAgents[ghostNum])
-                newParticle[ghostNum] = util.sample(distance)
+            for i in range(self.numGhosts):
+                newPosDist = getPositionDistributionForGhost(setGhostPositions(gameState, newParticle), i, self.ghostAgents[i])
+                newParticle[i] = util.sample(newPosDist)
 
             "*** END YOUR CODE HERE ***"
             newParticles.append(tuple(newParticle))
@@ -644,11 +649,11 @@ class JointParticleFilter:
         "*** YOUR CODE HERE ***"
 
         dist = util.Counter()
+
         for particle in self.particles:
-            dist[particle] = dist[particle] + 1.0
+            dist[particle] += 1.0
 
         dist.normalize()
-
         return dist
 
 # One JointInference module is shared globally across instances of MarginalInference
