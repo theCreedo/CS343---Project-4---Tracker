@@ -246,8 +246,6 @@ class ExactInference(InferenceModule):
         # set current beliefs to updated all beliefs
         self.beliefs = allBeliefs
 
-
-
     def getBeliefDistribution(self):
         return self.beliefs
 
@@ -285,10 +283,20 @@ class ParticleFilter(InferenceModule):
         # create the particle list
         self.particlesList = list()
 
+        # add a particle limit check or else it'll take forever
+        particleLimit = self.numParticles
+
         # for every particle and every legal position, append where that particle could be located
         for _ in range(self.numParticles):
             for p in self.legalPositions:
-                self.particlesList.append(p)
+
+                # if limit has been reached then exit this loop
+                if particleLimit == 0:
+                    break
+                # else keep adding positions to list until it'
+                else:
+                    self.particlesList.append(p)
+                    particleLimit = particleLimit - 1
 
     def observe(self, observation, gameState):
         """
@@ -347,6 +355,7 @@ class ParticleFilter(InferenceModule):
             # Check whether particles all have a weight of 0 and initialize uniformly if true
             if allPossible.totalCount() == 0:
                 self.initializeUniformly(gameState)
+
             else:
 
                 # iterate through particles
@@ -487,11 +496,15 @@ class JointParticleFilter:
         random.shuffle(positions)
 
         self.particles = list()
-
+        particleLimit = self.numParticles
         # store per particle as a position
         for _ in range(self.numParticles):
             for p in positions:
-                self.particles.append(p)
+                if particleLimit == 0:
+                    break
+                else:
+                    self.particles.append(p)
+                    particleLimit = particleLimit - 1
 
     def addGhostAgent(self, agent):
         """
@@ -543,7 +556,7 @@ class JointParticleFilter:
         # counter
         possibleCounter = util.Counter()
 
-        for particle in self.particles:
+        for _, particle in enumerate(self.particles):
             prior = 1
 
             # for each ghost
@@ -561,14 +574,17 @@ class JointParticleFilter:
             # add prior to particle
             possibleCounter[particle] = possibleCounter[particle] + prior
 
+        # check for counter values all = 0
         if possibleCounter.totalCount() == 0:
             self.initializeParticles()
 
+            # set particle to jailed ghost because found
             for particle in self.particles:
                 for i in range(self.numGhosts):
                     if noisyDistances[i] == None:
                         particle = self.getParticleWithGhostInJail(particle, i)
         else:
+            # else normalize and resample it for particle list
             possibleCounter.normalize()
             newParticleList = list()
 
@@ -637,6 +653,7 @@ class JointParticleFilter:
 
             "*** YOUR CODE HERE ***"
 
+            # basically just iterate through all ghost and distributions as given in comments
             for i in range(self.numGhosts):
                 newPosDist = getPositionDistributionForGhost(setGhostPositions(gameState, newParticle), i, self.ghostAgents[i])
                 newParticle[i] = util.sample(newPosDist)
